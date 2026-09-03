@@ -1,0 +1,59 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Fotoğraf Galerisi" data-en="Photo Gallery">Fotoğraf Galerisi</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Seçim saha çalışmalarınız ve etkinlik fotoğraflarınızı galeride sergileyin." data-en="Display your field campaign and event photos in the gallery.">Seçim saha çalışmalarınız ve etkinlik fotoğraflarınızı galeride sergileyin.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success">
+        <%= mesaj === 'resim_eklendi' ? 'Fotoğraf başarıyla yüklendi.' :
+            mesaj === 'resim_silindi' ? 'Fotoğraf silindi.' : mesaj %>
+    </div>
+<% } %>
+
+<% if (req && req.query && req.query.hata) { %>
+    <div class="alert alert-danger"><%= req.query.hata === 'resim_secilmedi' ? 'Lütfen bir resim dosyası seçin!' : 'Bir hata oluştu!' %></div>
+<% } %>
+
+<!-- Fotoğraf Yükleme Formu -->
+<div class="card" style="margin-bottom:2rem;">
+    <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;" data-tr="📸 Yeni Fotoğraf Yükle" data-en="📸 Upload New Photo">📸 Yeni Fotoğraf Yükle</h3>
+    <form action="/panel/galeri/ekle" method="POST" enctype="multipart/form-data">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+                <label data-tr="Fotoğraf Seç *" data-en="Select Photo *">Fotoğraf Seç *</label>
+                <input type="file" name="resim" class="form-control" required accept="image/png, image/jpeg, image/jpg, image/webp">
+                <small style="color:var(--text-muted);">JPG, PNG, WEBP (Max 5MB)</small>
+            </div>
+            <div class="form-group">
+                <label data-tr="Başlık / Etiket (Opsiyonel)" data-en="Title / Label (Optional)">Başlık / Etiket (Opsiyonel)</label>
+                <input type="text" name="baslik_tr" class="form-control" placeholder="ör. Mahalle Buluşması">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" data-tr="Fotoğrafı Yükle" data-en="Upload Photo">Fotoğrafı Yükle</button>
+    </form>
+</div>
+
+<!-- Yüklü Galeri Görselleri -->
+<h3 style="margin-bottom:1rem;" data-tr="Galerideki Fotoğraflar" data-en="Gallery Photos">Galerideki Fotoğraflar</h3>
+<% if (galeri && galeri.length > 0) { %>
+    <div class="gallery-grid">
+        <% galeri.forEach(function(g) { %>
+            <div class="gallery-item card" style="padding:0.5rem;">
+                <img src="<%= g.resim_yolu %>" alt="Galeri Resim" style="width:100%; height:180px; object-fit:cover; border-radius:var(--radius-sm);">
+                <div style="padding:0.5rem; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.85rem; color:var(--text-secondary);"><%= g.baslik_tr || 'Resim' %></span>
+                    <form action="/panel/galeri/sil/<%= g.id %>" method="POST" onsubmit="return confirm('Bu fotoğrafı silmek istediğinize emin misiniz?');">
+                        <button type="submit" class="btn btn-danger btn-sm" data-tr="Sil" data-en="Delete">Sil</button>
+                    </form>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <div class="card" style="text-align:center; color:var(--text-muted);" data-tr="Henüz fotoğraf yüklenmedi." data-en="No photos uploaded yet.">Henüz fotoğraf yüklenmedi.</div>
+<% } %>
+
+<%- include('layout_alt') %>

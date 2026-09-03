@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aday Girişi - AK Parti Aday Tanıtım Sistemi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="min-height:100vh; display:flex; flex-direction:column;">
+
+    <nav class="tanitim-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/akparti-official-logo.png" alt="AK Parti Logo" style="height:36px; object-fit:contain;">
+                <span>AK PARTİ ADAY GİRİŞİ</span>
+            </a>
+            <div class="top-controls">
+                <button class="btn btn-outline btn-sm dil-degistir-btn">🌐 <span class="dil-etiket-metni">EN</span></button>
+                <button class="btn btn-outline btn-sm tema-degistir-btn"><span class="tema-durum-metni">🌙 Karanlık</span></button>
+                <a href="/kayit" class="btn btn-primary btn-sm" data-tr="Aday Kaydı" data-en="Register">Aday Kaydı</a>
+            </div>
+        </div>
+    </nav>
+
+    <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:2rem 1rem;">
+        <div class="card" style="max-width:420px; width:100%;">
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h2 style="color:var(--ak-kirmizi);" data-tr="Aday Yönetim Paneli" data-en="Candidate Management Panel">Aday Yönetim Paneli</h2>
+                <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Hesabınıza erişmek için bilgilerinizi giriniz." data-en="Enter your details to access your account.">Hesabınıza erişmek için bilgilerinizi giriniz.</p>
+            </div>
+
+            <% if (mesaj) { %>
+                <div class="alert alert-success">
+                    <%= mesaj === 'kayit_basarili_onay_bekliyor' ? 'Kayıt başvurunuz alındı! Süper Admin onayından sonra giriş yapabilirsiniz.' :
+                        mesaj === 'cikis_yapildi' ? 'Başarıyla çıkış yapıldı.' : mesaj %>
+                </div>
+            <% } %>
+
+            <% if (hata) { %>
+                <div class="alert alert-danger">
+                    <%= hata === 'hesabiniz_henuz_onaylanmadi' ? 'Hesabınız henüz Süper Admin tarafından onaylanmamıştır.' :
+                        hata === 'hesabiniz_pasife_alinmistir' ? 'Hesabınız pasif duruma getirilmiştir.' :
+                        hata === 'gecersiz_eposta_veya_sifre' ? 'E-posta adresi veya şifre hatalı!' :
+                        hata === 'oturum_gerekli' ? 'Lütfen önce giriş yapın!' :
+                        'Giriş yapılamadı!' %>
+                </div>
+            <% } %>
+
+            <form action="/giris" method="POST">
+                <div class="form-group">
+                    <label data-tr="E-posta Adresi" data-en="Email Address">E-posta Adresi</label>
+                    <input type="email" name="eposta" class="form-control" required placeholder="ornek@akparti.org.tr">
+                </div>
+
+                <div class="form-group">
+                    <label data-tr="Şifre" data-en="Password">Şifre</label>
+                    <input type="password" name="sifre" class="form-control" required placeholder="******">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;" data-tr="Giriş Yap" data-en="Login">Giriş Yap</button>
+            </form>
+
+            <div style="text-align:center; margin-top:1.5rem; font-size:0.9rem;">
+                <span data-tr="Hesabınız yok mu?" data-en="Don't have an account?">Hesabınız yok mu?</span>
+                <a href="/kayit" style="font-weight:600;" data-tr="Aday Olun" data-en="Sign Up">Aday Olun</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/ana.js"></script>
+</body>
+</html>

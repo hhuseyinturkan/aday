@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= aday.ad %> <%= aday.soyad %> - AK Parti Aday Tanıtım Sitesi</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <% if (ayarlar && ayarlar.tema_rengi === 'sari') { %>
+    <style>
+        :root { --ak-turuncu: #FFB800; --ak-turuncu-hover: #D69A00; --ak-kirmizi: #FFB800; --ak-kirmizi-hover: #D69A00; }
+    </style>
+    <% } %>
+</head>
+<body>
+
+    <!-- 1. Üst Menü (Header Nav) -->
+    <nav class="tanitim-nav">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <% if (aday.logo_resmi) { %>
+                    <img src="<%= aday.logo_resmi %>" alt="Logo">
+                <% } else { %>
+                    <img src="/images/akparti-official-logo.png" alt="AK Parti Logo" style="height:36px; object-fit:contain;">
+                <% } %>
+                <span><%= aday.ad %> <%= aday.soyad %></span>
+            </a>
+
+            <button class="mobile-menu-btn" aria-label="Menü">☰</button>
+
+            <ul class="nav-links">
+                <li><a href="#hakkinda" data-tr="Hakkında" data-en="About">Hakkında</a></li>
+                <li><a href="#ozgecmis" data-tr="Öz Geçmiş" data-en="Biography">Öz Geçmiş</a></li>
+                <li><a href="#vaatler" data-tr="Vaatler" data-en="Promises">Vaatler</a></li>
+                <li><a href="#projeler" data-tr="Projeler" data-en="Projects">Projeler</a></li>
+                <li><a href="#haberler" data-tr="Haberler" data-en="News">Haberler</a></li>
+                <li><a href="#galeri" data-tr="Galeri" data-en="Gallery">Galeri</a></li>
+                <li><a href="#iletisim" data-tr="İletişim" data-en="Contact">İletişim</a></li>
+                <li>
+                    <button class="btn btn-outline btn-sm dil-degistir-btn">🌐 <span class="dil-etiket-metni">EN</span></button>
+                </li>
+                <li>
+                    <button class="btn btn-outline btn-sm tema-degistir-btn"><span class="tema-durum-metni">🌙 Karanlık</span></button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 2. Büyük Kapak Alanı (Hero Section) & 3. Fotoğraf ve Kısa Tanıtım -->
+    <header id="hero" class="hero-section" style="background-image: url('<%= aday.kapak_resmi || '/images/default-kapak.svg' %>');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <img src="<%= aday.profil_resmi || 'https://via.placeholder.com/160?text=Aday' %>" alt="<%= aday.ad %> <%= aday.soyad %>" class="profile-avatar">
+            <h1 class="hero-title"><%= aday.ad %> <%= aday.soyad %></h1>
+            
+            <p class="hero-subtitle">
+                <span class="lang-tr"><%= aday.unvan_tr || 'AK Parti Adayı' %></span>
+                <span class="lang-en" style="display:none;"><%= aday.unvan_en || aday.unvan_tr || 'AK Party Candidate' %></span>
+                • <%= aday.il %> / <%= aday.ilce %>
+            </p>
+
+            <p style="font-size:1.1rem; max-width:700px; margin:0 auto 1.5rem; opacity:0.95;">
+                <span class="lang-tr"><%= aday.kisa_tanitim_tr || 'Türkiye Yüzyılı için eser ve hizmet siyaseti anlayışıyla çıktığımız bu yolda vizyon projemizle halkımıza hizmet etmeye hazırız.' %></span>
+                <span class="lang-en" style="display:none;"><%= aday.kisa_tanitim_en || aday.kisa_tanitim_tr || 'We are ready to serve our people with works and service policy vision.' %></span>
+            </p>
+
+            <a href="#iletisim" class="btn btn-secondary" data-tr="Bize Ulaşın" data-en="Contact Us">Bize Ulaşın</a>
+        </div>
+    </header>
+
+    <!-- 4. Aday Hakkında -->
+    <section id="hakkinda" class="section">
+        <h2 class="section-title" data-tr="Aday Hakkında" data-en="About Candidate">Aday Hakkında</h2>
+        <div class="card" style="padding:2rem;">
+            <p style="font-size:1.05rem; line-height:1.8;">
+                <span class="lang-tr"><%= ozgecmis.detayli_ozgecmis_tr || (aday.ad + ' ' + aday.soyad + ', ' + aday.il + ' ili ' + aday.ilce + ' ilçesinde doğmuş, yıllardır bölgenin gelişimi ve halkımızın refahı için çeşitli kademelerde hizmet vermiştir.') %></span>
+                <span class="lang-en" style="display:none;"><%= ozgecmis.detayli_ozgecmis_en || ozgecmis.detayli_ozgecmis_tr || (aday.ad + ' ' + aday.soyad + ' was born in ' + aday.ilce + ', ' + aday.il + ' and has served in various capacities for the development of the region.') %></span>
+            </p>
+        </div>
+    </section>
+
+    <!-- 5. Öz Geçmiş (Eğitim ve Çalışmalar) -->
+    <section id="ozgecmis" class="section" style="background-color: var(--bg-surface);">
+        <h2 class="section-title" data-tr="Öz Geçmiş ve Deneyimler" data-en="Biography & Experience">Öz Geçmiş ve Deneyimler</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3 style="color:var(--ak-turuncu); margin-bottom:1rem;" data-tr="🎓 Eğitim Bilgileri" data-en="🎓 Education">🎓 Eğitim Bilgileri</h3>
+                <p>
+                    <span class="lang-tr"><%= ozgecmis.egitim_bilgileri_tr || 'Lisans ve Lisansüstü eğitimlerini başarıyla tamamlamıştır.' %></span>
+                    <span class="lang-en" style="display:none;"><%= ozgecmis.egitim_bilgileri_en || ozgecmis.egitim_bilgileri_tr || 'Completed Undergraduate and Graduate education successfully.' %></span>
+                </p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--ak-turuncu); margin-bottom:1rem;" data-tr="💼 Çalışmalar ve Kariyer" data-en="💼 Career & Experience">💼 Çalışmalar ve Kariyer</h3>
+                <p>
+                    <span class="lang-tr"><%= ozgecmis.calismalar_tr || 'Kamu ve özel sektörde birçok vizyon projeye öncülük etmiştir.' %></span>
+                    <span class="lang-en" style="display:none;"><%= ozgecmis.calismalar_en || ozgecmis.calismalar_tr || 'Pioneered several vision projects in public and private sectors.' %></span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Vaatler -->
+    <section id="vaatler" class="section">
+        <h2 class="section-title" data-tr="Adaylık Vaatlerimiz" data-en="Candidate Commitments">Adaylık Vaatlerimiz</h2>
+        <% if (vaatler && vaatler.length > 0) { %>
+            <div class="grid-container">
+                <% vaatler.forEach(function(vaat) { %>
+                    <div class="card" style="border-left:5px solid var(--ak-sari);">
+                        <h3 style="margin-bottom:0.5rem; color:var(--text-primary);">
+                            <span class="lang-tr"><%= vaat.baslik_tr %></span>
+                            <span class="lang-en" style="display:none;"><%= vaat.baslik_en || vaat.baslik_tr %></span>
+                        </h3>
+                        <p style="color:var(--text-secondary);">
+                            <span class="lang-tr"><%= vaat.aciklama_tr %></span>
+                            <span class="lang-en" style="display:none;"><%= vaat.aciklama_en || vaat.aciklama_tr %></span>
+                        </p>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="card" style="text-align:center;"><p data-tr="Henüz eklenmiş vaat bulunmamaktadır." data-en="No commitments added yet.">Henüz eklenmiş vaat bulunmamaktadır.</p></div>
+        <% } %>
+    </section>
+
+    <!-- 7. Projeler -->
+    <section id="projeler" class="section" style="background-color: var(--bg-surface);">
+        <h2 class="section-title" data-tr="Projelerimiz" data-en="Our Projects">Projelerimiz</h2>
+        <% if (projeler && projeler.length > 0) { %>
+            <div class="grid-container">
+                <% projeler.forEach(function(proje) { %>
+                    <div class="card">
+                        <% if (proje.resim) { %>
+                            <img src="<%= proje.resim %>" alt="<%= proje.baslik_tr %>" style="width:100%; height:180px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:1rem;">
+                        <% } %>
+                        <span style="font-size:0.8rem; color:var(--ak-turuncu); font-weight:600;"><%= proje.tarih || '' %></span>
+                        <h3 style="margin:0.25rem 0 0.5rem;">
+                            <span class="lang-tr"><%= proje.baslik_tr %></span>
+                            <span class="lang-en" style="display:none;"><%= proje.baslik_en || proje.baslik_tr %></span>
+                        </h3>
+                        <p style="color:var(--text-secondary); font-size:0.95rem;">
+                            <span class="lang-tr"><%= proje.aciklama_tr %></span>
+                            <span class="lang-en" style="display:none;"><%= proje.aciklama_en || proje.aciklama_tr %></span>
+                        </p>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="card" style="text-align:center;"><p data-tr="Henüz eklenmiş proje bulunmamaktadır." data-en="No projects added yet.">Henüz eklenmiş proje bulunmamaktadır.</p></div>
+        <% } %>
+    </section>
+
+    <!-- 8. Haberler -->
+    <section id="haberler" class="section">
+        <h2 class="section-title" data-tr="Haberler ve Duyurular" data-en="News & Announcements">Haberler ve Duyurular</h2>
+        <% if (haberler && haberler.length > 0) { %>
+            <div class="grid-container">
+                <% haberler.forEach(function(haber) { %>
+                    <div class="card">
+                        <% if (haber.resim) { %>
+                            <img src="<%= haber.resim %>" alt="<%= haber.baslik_tr %>" style="width:100%; height:180px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:1rem;">
+                        <% } %>
+                        <span style="font-size:0.8rem; color:var(--text-muted);"><%= haber.tarih || '' %></span>
+                        <h3 style="margin:0.25rem 0 0.5rem;">
+                            <span class="lang-tr"><%= haber.baslik_tr %></span>
+                            <span class="lang-en" style="display:none;"><%= haber.baslik_en || haber.baslik_tr %></span>
+                        </h3>
+                        <p style="color:var(--text-secondary); font-size:0.95rem;">
+                            <span class="lang-tr"><%= haber.ozet_tr || haber.icerik_tr %></span>
+                            <span class="lang-en" style="display:none;"><%= haber.ozet_en || haber.icerik_en || haber.ozet_tr || haber.icerik_tr %></span>
+                        </p>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="card" style="text-align:center;"><p data-tr="Henüz eklenmiş haber bulunmamaktadır." data-en="No news added yet.">Henüz eklenmiş haber bulunmamaktadır.</p></div>
+        <% } %>
+    </section>
+
+    <!-- 9. Fotoğraf Galerisi -->
+    <section id="galeri" class="section" style="background-color: var(--bg-surface);">
+        <h2 class="section-title" data-tr="Fotoğraf Galerisi" data-en="Photo Gallery">Fotoğraf Galerisi</h2>
+        <% if (galeri && galeri.length > 0) { %>
+            <div class="gallery-grid">
+                <% galeri.forEach(function(resim) { %>
+                    <div class="gallery-item">
+                        <img src="<%= resim.resim_yolu %>" alt="Galeri Resim">
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="card" style="text-align:center;"><p data-tr="Henüz foto eklenmemiştir." data-en="No photos uploaded yet.">Henüz fotoğraf yüklenmemiştir.</p></div>
+        <% } %>
+    </section>
+
+    <!-- 10. İletişim Bilgileri & 11. Sosyal Medya -->
+    <section id="iletisim" class="section">
+        <h2 class="section-title" data-tr="İletişim ve Takip" data-en="Contact & Follow">İletişim ve Takip</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;" data-tr="📞 İletişim Bilgileri" data-en="📞 Contact Info">📞 İletişim Bilgileri</h3>
+                <p style="margin-bottom:0.5rem;"><strong>📱 Telefon:</strong> <%= iletisim.telefon || 'Belirtilmedi' %></p>
+                <p style="margin-bottom:0.5rem;"><strong>✉️ E-posta:</strong> <%= iletisim.eposta || 'Belirtilmedi' %></p>
+                <p style="margin-bottom:1rem;"><strong>📍 Adres:</strong>
+                    <span class="lang-tr"><%= iletisim.adres_tr || (aday.ilce + ' / ' + aday.il) %></span>
+                    <span class="lang-en" style="display:none;"><%= iletisim.adres_en || iletisim.adres_tr || (aday.ilce + ' / ' + aday.il) %></span>
+                </p>
+
+                <% if (iletisim.harita_iframe) { %>
+                    <div style="margin-top:1rem; border-radius:var(--radius-md); overflow:hidden;">
+                        <%- iletisim.harita_iframe %>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="card" style="text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                <h3 style="color:var(--ak-kirmizi); margin-bottom:1.5rem;" data-tr="🌐 Sosyal Medyada Takip Edin" data-en="🌐 Follow on Social Media">🌐 Sosyal Medyada Takip Edin</h3>
+                <div class="social-links">
+                    <% if (sosyal.facebook) { %>
+                        <a href="<%= sosyal.facebook %>" target="_blank" class="social-icon" title="Facebook">FB</a>
+                    <% } %>
+                    <% if (sosyal.instagram) { %>
+                        <a href="<%= sosyal.instagram %>" target="_blank" class="social-icon" title="Instagram">IG</a>
+                    <% } %>
+                    <% if (sosyal.twitter) { %>
+                        <a href="<%= sosyal.twitter %>" target="_blank" class="social-icon" title="Twitter / X">X</a>
+                    <% } %>
+                    <% if (sosyal.youtube) { %>
+                        <a href="<%= sosyal.youtube %>" target="_blank" class="social-icon" title="YouTube">YT</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. Footer -->
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> <%= aday.ad %> <%= aday.soyad %> - AK Parti Tanıtım Sitesi</p>
+    </footer>
+
+    <script src="/js/ana.js"></script>
+</body>
+</html>

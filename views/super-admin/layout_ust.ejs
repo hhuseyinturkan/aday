@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Süper Admin Paneli - AK Parti</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="panel-container">
+        <!-- Süper Admin Özel Sol Menü -->
+        <aside class="panel-sidebar" style="background:var(--bg-surface); border-right:2px solid var(--ak-kirmizi);">
+            <div class="sidebar-header">
+                <img src="/images/akparti-official-logo.png" alt="AK Parti Logo" style="height:36px; object-fit:contain;">
+                <h2 style="font-size:1rem; color:var(--ak-kirmizi);">SÜPER ADMİN</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="<%= sayfaAdi === 'dashboard' ? 'active' : '' %>">
+                    <a href="/yonetim">📈 <span>Dashboard</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'adaylar' ? 'active' : '' %>">
+                    <a href="/yonetim/adaylar">👥 <span>Tüm Adaylar</span></a>
+                </li>
+                <li style="margin-top:2rem; border-top:1px solid var(--border-color);">
+                    <a href="/cikis" style="color:#EF4444;">🚪 <span>Çıkış Yap</span></a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Sağ İçerik Alanı -->
+        <main class="panel-content">
+            <div class="top-bar">
+                <div>
+                    <h2 style="font-size:1.25rem;">Sistem Yönetimi</h2>
+                    <span style="font-size:0.85rem; color:var(--text-muted);">Giriş Yapan: <%= oturumKullanici.eposta %></span>
+                </div>
+                <div class="top-controls">
+                    <button class="btn btn-outline btn-sm dil-degistir-btn">🌐 <span class="dil-etiket-metni">EN</span></button>
+                    <button class="btn btn-outline btn-sm tema-degistir-btn"><span class="tema-durum-metni">🌙 Karanlık</span></button>
+                </div>
+            </div>

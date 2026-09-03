@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aday Kaydı - AK Parti Aday Tanıtım Sistemi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="min-height:100vh; display:flex; flex-direction:column;">
+
+    <nav class="tanitim-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/akparti-official-logo.png" alt="AK Parti Logo" style="height:36px; object-fit:contain;">
+                <span>AK PARTİ ADAY KAYDI</span>
+            </a>
+            <div class="top-controls">
+                <button class="btn btn-outline btn-sm dil-degistir-btn">🌐 <span class="dil-etiket-metni">EN</span></button>
+                <button class="btn btn-outline btn-sm tema-degistir-btn"><span class="tema-durum-metni">🌙 Karanlık</span></button>
+                <a href="/giris" class="btn btn-outline btn-sm" data-tr="Giriş Yap" data-en="Login">Giriş Yap</a>
+            </div>
+        </div>
+    </nav>
+
+    <div style="flex:1; display:flex; align-items:center; justify-content:center; padding:2rem 1rem;">
+        <div class="card" style="max-width:550px; width:100%;">
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <h2 style="color:var(--ak-kirmizi);" data-tr="Aday Başvuru Formu" data-en="Candidate Application Form">Aday Başvuru Formu</h2>
+                <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Bilgilerinizi doldurarak tanitim sitenizi olusturun." data-en="Fill in your information to create your candidate site.">Bilgilerinizi doldurarak tanıtım sitenizi oluşturun.</p>
+            </div>
+
+            <% if (hata) { %>
+                <div class="alert alert-danger">
+                    <%= hata === 'lutfen_tum_alanlari_doldurun' ? 'Lütfen tüm alanları doldurun!' :
+                        hata === 'sifreler_eslesmiyor' ? 'Şifreler uyuşmuyor!' :
+                        hata === 'sifre_en_az_6_karakter_olmalidir' ? 'Şifre en az 6 karakter olmalıdır!' :
+                        hata === 'bu_eposta_zaten_kayitli' ? 'Bu e-posta adresi zaten sistemde kayıtlı!' :
+                        'Kayıt sırasında bir hata oluştu!' %>
+                </div>
+            <% } %>
+
+            <form action="/kayit" method="POST">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label data-tr="Ad" data-en="First Name">Ad *</label>
+                        <input type="text" name="ad" class="form-control" required placeholder="Ahmet">
+                    </div>
+                    <div class="form-group">
+                        <label data-tr="Soyad" data-en="Last Name">Soyad *</label>
+                        <input type="text" name="soyad" class="form-control" required placeholder="Yılmaz">
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label data-tr="E-posta" data-en="Email">E-posta *</label>
+                        <input type="email" name="eposta" class="form-control" required placeholder="ahmet.yilmaz@akparti.org.tr">
+                    </div>
+                    <div class="form-group">
+                        <label data-tr="Telefon" data-en="Phone">Telefon *</label>
+                        <input type="tel" name="telefon" class="form-control" required placeholder="0555 123 45 67">
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label data-tr="İl" data-en="City">İl *</label>
+                        <input type="text" name="il" class="form-control" required placeholder="Ankara">
+                    </div>
+                    <div class="form-group">
+                        <label data-tr="İlçe" data-en="District">İlçe *</label>
+                        <input type="text" name="ilce" class="form-control" required placeholder="Çankaya">
+                    </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div class="form-group">
+                        <label data-tr="Şifre" data-en="Password">Şifre *</label>
+                        <input type="password" name="sifre" class="form-control" required placeholder="******">
+                    </div>
+                    <div class="form-group">
+                        <label data-tr="Şifre Tekrar" data-en="Password Again">Şifre Tekrar *</label>
+                        <input type="password" name="sifreTekrar" class="form-control" required placeholder="******">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;" data-tr="Kayıt Ol ve Başvur" data-en="Register and Apply">Kayıt Ol ve Başvur</button>
+            </form>
+
+            <div style="text-align:center; margin-top:1.5rem; font-size:0.9rem;">
+                <span data-tr="Zaten bir hesabınız var mı?" data-en="Already have an account?">Zaten bir hesabınız var mı?</span>
+                <a href="/giris" style="font-weight:600;" data-tr="Giriş Yapın" data-en="Log in">Giriş Yapın</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/ana.js"></script>
+</body>
+</html>

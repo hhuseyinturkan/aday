@@ -1,0 +1,44 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="İletişim Bilgileri" data-en="Contact Information">İletişim Bilgileri</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Seçim ofisinizin veya ekibinizin iletişim detaylarını güncelleyin." data-en="Update campaign office or team contact details.">Seçim ofisinizin veya ekibinizin iletişim detaylarını güncelleyin.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj === 'iletisim_guncellendi' ? 'İletişim bilgileri başarıyla güncellendi.' : mesaj %></div>
+<% } %>
+
+<form action="/panel/iletisim" method="POST" class="card">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="form-group">
+            <label data-tr="📱 Telefon Numarası" data-en="📱 Phone Number">📱 Telefon Numarası</label>
+            <input type="text" name="telefon" class="form-control" value="<%= iletisim.telefon || '' %>" placeholder="0555 123 45 67">
+        </div>
+        <div class="form-group">
+            <label data-tr="✉️ E-posta Adresi" data-en="✉️ Email Address">✉️ E-posta Adresi</label>
+            <input type="email" name="eposta" class="form-control" value="<%= iletisim.eposta || '' %>" placeholder="iletisim@aday.com">
+        </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="form-group">
+            <label data-tr="📍 Adres (Türkçe)" data-en="📍 Address (Turkish)">📍 Adres (Türkçe)</label>
+            <textarea name="adres_tr" class="form-control" rows="3" placeholder="Seçim koordinasyon merkezi açık adresi..."><%= iletisim.adres_tr || '' %></textarea>
+        </div>
+        <div class="form-group">
+            <label data-tr="📍 Adres (İngilizce)" data-en="📍 Address (English)">📍 Adres (İngilizce)</label>
+            <textarea name="adres_en" class="form-control" rows="3" placeholder="Office address in English..."><%= iletisim.adres_en || '' %></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label data-tr="🗺️ Google Maps Kodu (iframe)" data-en="🗺️ Google Maps Embed Code (iframe)">🗺️ Google Maps Kodu (iframe)</label>
+        <textarea name="harita_iframe" class="form-control" rows="3" placeholder='<iframe src="https://www.google.com/maps/embed?..." width="100%" height="250"></iframe>'><%= iletisim.harita_iframe || '' %></textarea>
+        <small style="color:var(--text-muted);">Google Haritalar'dan "Haritayı Yerleştir" seçeneğindeki iframe kodunu buraya yapıştırabilirsiniz.</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-tr="İletişim Bilgilerini Kaydet" data-en="Save Contact Info">İletişim Bilgilerini Kaydet</button>
+</form>
+
+<%- include('layout_alt') %>

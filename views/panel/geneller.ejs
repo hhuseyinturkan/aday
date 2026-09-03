@@ -1,0 +1,54 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Genel Bakış" data-en="Overview">Genel Bakış</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Sitenizin genel durumunu ve içerik istatistiklerinizi buradan inceleyebilirsiniz." data-en="Review your site summary and stats here.">Sitenizin genel durumunu ve içerik istatistiklerinizi buradan inceleyebilirsiniz.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj %></div>
+<% } %>
+
+<!-- İstatistik Kartları -->
+<div class="grid-container">
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.ziyaret %></div>
+            <div class="stat-title" data-tr="Toplam Ziyaretçi" data-en="Total Visitors">Toplam Ziyaretçi</div>
+        </div>
+        <div style="font-size:2.5rem;">👁️</div>
+    </div>
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.proje %></div>
+            <div class="stat-title" data-tr="Eklenen Projeler" data-en="Added Projects">Eklenen Projeler</div>
+        </div>
+        <div style="font-size:2.5rem;">🏗️</div>
+    </div>
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.haber %></div>
+            <div class="stat-title" data-tr="Yayınlanan Haberler" data-en="Published News">Yayınlanan Haberler</div>
+        </div>
+        <div style="font-size:2.5rem;">📰</div>
+    </div>
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.vaat %></div>
+            <div class="stat-title" data-tr="Adaylık Vaatleri" data-en="Candidate Promises">Adaylık Vaatleri</div>
+        </div>
+        <div style="font-size:2.5rem;">🤝</div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:2rem;">
+    <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;" data-tr="Hızlı İşlemler" data-en="Quick Actions">Hızlı İşlemler</h3>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <a href="/panel/kisisel-bilgiler" class="btn btn-outline" data-tr="Profilimi Düzenle" data-en="Edit Profile">Profilimi Düzenle</a>
+        <a href="/panel/projeler" class="btn btn-outline" data-tr="Yeni Proje Ekle" data-en="Add New Project">Yeni Proje Ekle</a>
+        <a href="/panel/haberler" class="btn btn-outline" data-tr="Haber Ekle" data-en="Add News">Haber Ekle</a>
+        <a href="/aday/<%= oturumAday.slug %>" target="_blank" class="btn btn-primary" data-tr="Tanıtım Sitemi İncele" data-en="View My Presentation Site">Tanıtım Sitemi İncele</a>
+    </div>
+</div>
+
+<%- include('layout_alt') %>

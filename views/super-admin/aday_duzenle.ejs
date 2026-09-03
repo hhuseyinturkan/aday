@@ -1,0 +1,63 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <h1 style="font-size:1.5rem; color:var(--text-primary);">Aday Hesabı Düzenle</h1>
+        <p style="color:var(--text-secondary); font-size:0.9rem;"><%= aday.ad %> <%= aday.soyad %> (<%= aday.eposta %>) bilgilerini güncelleyin.</p>
+    </div>
+    <a href="/yonetim/adaylar" class="btn btn-outline btn-sm">⬅️ Aday Listesine Dön</a>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj === 'bilgiler_guncellendi' ? 'Aday bilgileri başarıyla güncellendi.' : mesaj %></div>
+<% } %>
+
+<% if (hata) { %>
+    <div class="alert alert-danger"><%= hata %></div>
+<% } %>
+
+<form action="/yonetim/aday-duzenle/<%= aday.kullanici_id %>" method="POST" class="card">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="form-group">
+            <label>Ad *</label>
+            <input type="text" name="ad" class="form-control" value="<%= aday.ad %>" required>
+        </div>
+        <div class="form-group">
+            <label>Soyad *</label>
+            <input type="text" name="soyad" class="form-control" value="<%= aday.soyad %>" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Aday Unvanı (Türkçe)</label>
+        <input type="text" name="unvan_tr" class="form-control" value="<%= aday.unvan_tr || '' %>">
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.5rem;">
+        <div class="form-group">
+            <label>İl *</label>
+            <input type="text" name="il" class="form-control" value="<%= aday.il %>" required>
+        </div>
+        <div class="form-group">
+            <label>İlçe *</label>
+            <input type="text" name="ilce" class="form-control" value="<%= aday.ilce %>" required>
+        </div>
+        <div class="form-group">
+            <label>Hesap Durumu *</label>
+            <select name="durum" class="form-control">
+                <option value="onay_bekliyor" <%= aday.durum === 'onay_bekliyor' ? 'selected' : '' %>>Onay Bekliyor</option>
+                <option value="aktif" <%= aday.durum === 'aktif' ? 'selected' : '' %>>Aktif</option>
+                <option value="pasif" <%= aday.durum === 'pasif' ? 'selected' : '' %>>Pasif</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border-color);">
+        <label>Yeni Şifre Belirle (İsteğe Bağlı)</label>
+        <input type="password" name="sifre" class="form-control" placeholder="Değiştirmek istemiyorsanız boş bırakın">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Aday Bilgilerini Güncelle</button>
+</form>
+
+<%- include('layout_alt') %>

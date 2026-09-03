@@ -1,0 +1,37 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Öz Geçmiş ve Deneyimler" data-en="Biography & Experience">Öz Geçmiş ve Deneyimler</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Ayrıntılı biyografinizi, eğitim geçmişinizi ve geçmiş çalışmalarınızı düzenleyin." data-en="Manage your biography, education background and career history.">Ayrıntılı biyografinizi, eğitim geçmişinizi ve geçmiş çalışmalarınızı düzenleyin.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj === 'ozgecmis_guncellendi' ? 'Öz geçmiş başarıyla güncellendi.' : mesaj %></div>
+<% } %>
+
+<form action="/panel/ozgecmis" method="POST" class="card">
+    <div class="form-group">
+        <label data-tr="Ayrıntılı Öz Geçmiş" data-en="Detailed Biography">Ayrıntılı Öz Geçmiş</label>
+        <textarea name="detayli_ozgecmis_tr" class="form-control" rows="5" placeholder="Doğum yeri, hayat hikayesi, değerleri..."><%= ozgecmis.detayli_ozgecmis_tr || '' %></textarea>
+    </div>
+
+    <hr style="margin:2rem 0; border:0; border-top:1px solid var(--border-color);">
+
+    <h3 style="color:var(--ak-turuncu); margin-bottom:1rem;" data-tr="Eğitim Bilgileri" data-en="Education Information">Eğitim Bilgileri</h3>
+    <div class="form-group">
+        <label data-tr="Eğitim Bilgisi" data-en="Education Information">Eğitim Bilgisi</label>
+        <textarea name="egitim_bilgileri_tr" class="form-control" rows="4" placeholder="İlkokul, lise, üniversite ve yüksek lisans mezuniyetleri..."><%= ozgecmis.egitim_bilgileri_tr || '' %></textarea>
+    </div>
+
+    <hr style="margin:2rem 0; border:0; border-top:1px solid var(--border-color);">
+
+    <h3 style="color:var(--ak-turuncu); margin-bottom:1rem;" data-tr="Geçmiş Çalışmalar ve Görevler" data-en="Career & Roles">Geçmiş Çalışmalar ve Görevler</h3>
+    <div class="form-group">
+        <label data-tr="Çalışmalar ve Görevler" data-en="Career & Roles">Çalışmalar ve Görevler</label>
+        <textarea name="calismalar_tr" class="form-control" rows="4" placeholder="Sivil toplum kuruluşları, teşkilat görevleri ve iş hayatı..."><%= ozgecmis.calismalar_tr || '' %></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-tr="Kaydet ve Güncelle" data-en="Save & Update">Kaydet ve Güncelle</button>
+</form>
+
+<%- include('layout_alt') %>

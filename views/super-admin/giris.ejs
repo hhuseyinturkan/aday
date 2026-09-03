@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Yönetimi Girişi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="min-height:100vh; display:flex; align-items:center; justify-content:center; background-color:var(--ak-koyu);">
+
+    <div class="card" style="max-width:400px; width:100%; border-top:5px solid var(--ak-kirmizi);">
+        <div style="text-align:center; margin-bottom:1.5rem;">
+            <div style="background:var(--ak-kirmizi); color:#fff; width:48px; height:48px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.25rem; margin-bottom:0.5rem;">AK</div>
+            <h2>Sistem Yönetim Paneli</h2>
+            <p style="color:var(--text-muted); font-size:0.85rem;">Yalnızca yetkili süper admin girişi içindir.</p>
+        </div>
+
+        <% if (hata) { %>
+            <div class="alert alert-danger">
+                <%= hata === 'eposta_ve_sifre_girin' ? 'E-posta ve şifre giriniz.' :
+                    hata === 'gecersiz_bilgiler' ? 'Geçersiz e-posta veya şifre!' :
+                    hata === 'oturum_gerekli' ? 'Oturum açmanız gerekmektedir.' : 'Giriş başarısız!' %>
+            </div>
+        <% } %>
+
+        <form action="/yonetim/giris" method="POST">
+            <div class="form-group">
+                <label>Yönetici Kullanıcı Adı / E-posta</label>
+                <input type="text" name="eposta" class="form-control" required placeholder="admin@akparti.org.tr veya admin">
+            </div>
+
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" name="sifre" class="form-control" required placeholder="1234">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">Yönetim Paneline Giriş Yap</button>
+        </form>
+    </div>
+
+    <script src="/js/ana.js"></script>
+</body>
+</html>

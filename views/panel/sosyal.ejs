@@ -1,0 +1,36 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Sosyal Medya Hesapları" data-en="Social Media Accounts">Sosyal Medya Hesapları</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Tanıtım sitenizde görünecek resmi sosyal medya profil adreslerinizi güncelleyin." data-en="Update your official social media profile URLs on your website.">Tanıtım sitenizde görünecek resmi sosyal medya profil adreslerinizi güncelleyin.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj === 'sosyal_medya_guncellendi' ? 'Sosyal medya hesaplarınız başarıyla güncellendi.' : mesaj %></div>
+<% } %>
+
+<form action="/panel/sosyal" method="POST" class="card">
+    <div class="form-group">
+        <label>📘 Facebook URL</label>
+        <input type="url" name="facebook" class="form-control" value="<%= sosyal.facebook || '' %>" placeholder="https://facebook.com/kullaniciadi">
+    </div>
+
+    <div class="form-group">
+        <label>📸 Instagram URL</label>
+        <input type="url" name="instagram" class="form-control" value="<%= sosyal.instagram || '' %>" placeholder="https://instagram.com/kullaniciadi">
+    </div>
+
+    <div class="form-group">
+        <label>🐦 Twitter / X URL</label>
+        <input type="url" name="twitter" class="form-control" value="<%= sosyal.twitter || '' %>" placeholder="https://x.com/kullaniciadi">
+    </div>
+
+    <div class="form-group">
+        <label>▶️ YouTube URL</label>
+        <input type="url" name="youtube" class="form-control" value="<%= sosyal.youtube || '' %>" placeholder="https://youtube.com/@kanaladi">
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-tr="Adresleri Kaydet" data-en="Save URLs">Adresleri Kaydet</button>
+</form>
+
+<%- include('layout_alt') %>

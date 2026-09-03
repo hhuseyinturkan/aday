@@ -1,0 +1,145 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <h1 style="font-size:1.5rem; color:var(--text-primary);">Aday Yönetimi</h1>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">Sistemdeki tüm adayları görüntüleyin, onaylayın, durumlarını değiştirin veya yeni aday ekleyin.</p>
+    </div>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success">
+        <%= mesaj === 'aday_eklendi' ? 'Yeni aday başarıyla eklendi ve hesabı aktifleştirildi.' :
+            mesaj === 'aday_onaylandi' ? 'Aday hesabı başarıyla onaylandı.' :
+            mesaj === 'durum_guncellendi' ? 'Aday hesap durumu güncellendi.' :
+            mesaj === 'aday_silindi' ? 'Aday hesabı ve tüm verileri silindi.' : mesaj %>
+    </div>
+<% } %>
+
+<% if (hata) { %>
+    <div class="alert alert-danger">
+        <%= hata === 'bu_eposta_kayitli' ? 'Bu e-posta adresi ile zaten kayıtlı bir aday var!' :
+            hata === 'lutfen_tum_alanlari_doldurun' ? 'Lütfen gerekli tüm alanları doldurun!' : 'Bir işlem hatası oluştu!' %>
+    </div>
+<% } %>
+
+<!-- Yeni Aday Ekleme Kartı -->
+<div class="card" style="margin-bottom:2rem;">
+    <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;">➕ Manuel Yeni Aday Ekle</h3>
+    <form action="/yonetim/aday-ekle" method="POST">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+            <div class="form-group">
+                <label>Ad *</label>
+                <input type="text" name="ad" class="form-control" required placeholder="Ad">
+            </div>
+            <div class="form-group">
+                <label>Soyad *</label>
+                <input type="text" name="soyad" class="form-control" required placeholder="Soyad">
+            </div>
+            <div class="form-group">
+                <label>E-posta *</label>
+                <input type="email" name="eposta" class="form-control" required placeholder="eposta@akparti.org.tr">
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:1rem;">
+            <div class="form-group">
+                <label>Telefon</label>
+                <input type="text" name="telefon" class="form-control" placeholder="0555...">
+            </div>
+            <div class="form-group">
+                <label>İl *</label>
+                <input type="text" name="il" class="form-control" required placeholder="İl">
+            </div>
+            <div class="form-group">
+                <label>İlçe *</label>
+                <input type="text" name="ilce" class="form-control" required placeholder="İlçe">
+            </div>
+            <div class="form-group">
+                <label>Şifre *</label>
+                <input type="password" name="sifre" class="form-control" required placeholder="******">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Adayı Oluştur ve Aktifleştir</button>
+    </form>
+</div>
+
+<!-- Adaylar Listesi Tablosu -->
+<div class="card">
+    <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;">Tüm Adaylar Listesi</h3>
+    <% if (adaylar && adaylar.length > 0) { %>
+        <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:left;">
+                <thead>
+                    <tr style="border-bottom:2px solid var(--border-color); color:var(--text-secondary);">
+                        <th style="padding:0.75rem;">Aday</th>
+                        <th style="padding:0.75rem;">E-posta</th>
+                        <th style="padding:0.75rem;">Konum</th>
+                        <th style="padding:0.75rem;">Durum</th>
+                        <th style="padding:0.75rem;">Tarih</th>
+                        <th style="padding:0.75rem; text-align:right;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% adaylar.forEach(function(aday) { %>
+                        <tr style="border-bottom:1px solid var(--border-color);">
+                            <td style="padding:0.75rem;">
+                                <div style="display:flex; align-items:center; gap:0.75rem;">
+                                    <img src="<%= aday.profil_resmi || 'https://via.placeholder.com/40' %>" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                                    <div>
+                                        <strong><%= aday.ad %> <%= aday.soyad %></strong>
+                                        <div style="font-size:0.8rem; color:var(--text-muted);"><%= aday.unvan_tr || 'Aday' %></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding:0.75rem;"><%= aday.eposta %></td>
+                            <td style="padding:0.75rem;"><%= aday.il %> / <%= aday.ilce %></td>
+                            <td style="padding:0.75rem;">
+                                <% if (aday.durum === 'onay_bekliyor') { %>
+                                    <span style="background:rgba(255,198,0,0.2); color:#B47D00; padding:0.25rem 0.5rem; border-radius:4px; font-weight:600; font-size:0.8rem;">Onay Bekliyor</span>
+                                <% } else if (aday.durum === 'aktif') { %>
+                                    <span style="background:rgba(16,185,129,0.2); color:#059669; padding:0.25rem 0.5rem; border-radius:4px; font-weight:600; font-size:0.8rem;">Aktif</span>
+                                <% } else { %>
+                                    <span style="background:rgba(239,68,68,0.2); color:#DC2626; padding:0.25rem 0.5rem; border-radius:4px; font-weight:600; font-size:0.8rem;">Pasif</span>
+                                <% } %>
+                            </td>
+                            <td style="padding:0.75rem; font-size:0.85rem; color:var(--text-muted);"><%= aday.kayit_tarihi %></td>
+                            <td style="padding:0.75rem; text-align:right;">
+                                <div style="display:inline-flex; gap:0.4rem;">
+                                    <% if (aday.durum === 'onay_bekliyor') { %>
+                                        <form action="/yonetim/aday-onayla/<%= aday.kullanici_id %>" method="POST">
+                                            <button type="submit" class="btn btn-success btn-sm">Onayla</button>
+                                        </form>
+                                    <% } %>
+
+                                    <% if (aday.durum === 'aktif') { %>
+                                        <form action="/yonetim/aday-durum/<%= aday.kullanici_id %>" method="POST">
+                                            <input type="hidden" name="yeniDurum" value="pasif">
+                                            <button type="submit" class="btn btn-outline btn-sm" style="color:#DC2626;">Pasife Al</button>
+                                        </form>
+                                    <% } else if (aday.durum === 'pasif') { %>
+                                        <form action="/yonetim/aday-durum/<%= aday.kullanici_id %>" method="POST">
+                                            <input type="hidden" name="yeniDurum" value="aktif">
+                                            <button type="submit" class="btn btn-outline btn-sm" style="color:#059669;">Aktif Et</button>
+                                        </form>
+                                    <% } %>
+
+                                    <a href="/yonetim/aday-duzenle/<%= aday.kullanici_id %>" class="btn btn-outline btn-sm">Düzenle</a>
+
+                                    <form action="/yonetim/aday-sil/<%= aday.kullanici_id %>" method="POST" onsubmit="return confirm('Bu adayı ve adaya ait TÜM verileri silmek istediğinize emin misiniz?');">
+                                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <p style="color:var(--text-muted); text-align:center; padding:1.5rem;">Sistemde kayıtlı aday bulunamadı.</p>
+    <% } %>
+</div>
+
+<%- include('layout_alt') %>

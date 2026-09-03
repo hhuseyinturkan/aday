@@ -1,0 +1,66 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Projeler Yönetimi" data-en="Projects Management">Projeler Yönetimi</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Bölgeniz için hazırladığınız vizyon projelerinizi ve görsellerini paylaşın." data-en="Share your vision projects and images.">Bölgeniz için hazırladığınız vizyon projelerinizi ve görsellerini paylaşın.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success">
+        <%= mesaj === 'proje_eklendi' ? 'Yeni proje başarıyla eklendi.' :
+            mesaj === 'proje_silindi' ? 'Proje silindi.' : mesaj %>
+    </div>
+<% } %>
+
+<!-- Yeni Proje Ekle Formu -->
+<div class="card" style="margin-bottom:2rem;">
+    <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;" data-tr="➕ Yeni Proje Ekle" data-en="➕ Add New Project">➕ Yeni Proje Ekle</h3>
+    <form action="/panel/projeler/ekle" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label data-tr="Proje Başlığı *" data-en="Project Title *">Proje Başlığı *</label>
+            <input type="text" name="baslik_tr" class="form-control" required placeholder="ör. Millet Bahçesi ve Sosyal Tesisler">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+                <label data-tr="Proje Görseli" data-en="Project Image">Proje Görseli</label>
+                <input type="file" name="resim" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp">
+            </div>
+            <div class="form-group">
+                <label data-tr="Hedef Tarih / Yıl" data-en="Target Date / Year">Hedef Tarih / Yıl</label>
+                <input type="text" name="tarih" class="form-control" placeholder="ör. 2026 - 2027">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-tr="Proje Detayı" data-en="Details">Proje Detayı</label>
+            <textarea name="aciklama_tr" class="form-control" rows="3" placeholder="Projenin amacı, kapsadığı alan ve faydaları..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" data-tr="Proje Ekle" data-en="Add Project">Proje Ekle</button>
+    </form>
+</div>
+
+<!-- Mevcut Projeler Grid -->
+<h3 style="margin-bottom:1rem;" data-tr="Mevcut Projeleriniz" data-en="Your Projects">Mevcut Projeleriniz</h3>
+<% if (projeler && projeler.length > 0) { %>
+    <div class="grid-container">
+        <% projeler.forEach(function(p) { %>
+            <div class="card">
+                <% if (p.resim) { %>
+                    <img src="<%= p.resim %>" alt="<%= p.baslik_tr %>" style="width:100%; height:160px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:1rem;">
+                <% } %>
+                <h4 style="color:var(--ak-kirmizi); margin-bottom:0.25rem;"><%= p.baslik_tr %></h4>
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:0.5rem;">📅 <%= p.tarih || 'Tarih Belirtilmedi' %></p>
+                <p style="color:var(--text-secondary); font-size:0.9rem; margin-bottom:1rem;"><%= p.aciklama_tr %></p>
+                <form action="/panel/projeler/sil/<%= p.id %>" method="POST" onsubmit="return confirm('Bu projeyi silmek istediğinize emin misiniz?');">
+                    <button type="submit" class="btn btn-danger btn-sm" style="width:100%;" data-tr="Projeyi Sil" data-en="Delete Project">Projeyi Sil</button>
+                </form>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <div class="card" style="text-align:center; color:var(--text-muted);" data-tr="Henüz bir proje eklemediniz." data-en="No projects added yet.">Henüz bir proje eklemediniz.</div>
+<% } %>
+
+<%- include('layout_alt') %>

@@ -1,0 +1,59 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Adaylık Vaatleri" data-en="Candidate Commitments">Adaylık Vaatleri</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Seçim döneminde halkınıza sunacağınız vaatlerinizi ve hedeflerinizi yönetin." data-en="Manage your campaign commitments and goals.">Seçim döneminde halkınıza sunacağınız vaatlerinizi ve hedeflerinizi yönetin.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success">
+        <%= mesaj === 'vaat_eklendi' ? 'Yeni vaat başarıyla eklendi.' :
+            mesaj === 'vaat_silindi' ? 'Vaat silindi.' : mesaj %>
+    </div>
+<% } %>
+
+<!-- Yeni Vaat Ekleme Formu -->
+<div class="card" style="margin-bottom:2rem;">
+    <h3 style="color:var(--ak-kirmizi); margin-bottom:1rem;" data-tr="➕ Yeni Vaat Ekle" data-en="➕ Add New Commitment">➕ Yeni Vaat Ekle</h3>
+    <form action="/panel/vaatler/ekle" method="POST">
+        <div class="form-group">
+            <label data-tr="Vaat Başlığı *" data-en="Commitment Title *">Vaat Başlığı *</label>
+            <input type="text" name="baslik_tr" class="form-control" required placeholder="ör. 7/24 Açık Gençlik Merkezi">
+        </div>
+
+        <div class="form-group">
+            <label data-tr="Açıklama" data-en="Description">Açıklama</label>
+            <textarea name="aciklama_tr" class="form-control" rows="3" placeholder="Vaadin detayları ve kapsadığı hizmetler..."></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="width:150px;">
+                <label data-tr="Sıra No" data-en="Order No">Sıra No</label>
+                <input type="number" name="sira" class="form-control" value="0">
+            </div>
+            <button type="submit" class="btn btn-primary" data-tr="Vaat Ekle" data-en="Add Commitment">Vaat Ekle</button>
+        </div>
+    </form>
+</div>
+
+<!-- Eklenmiş Vaatler Listesi -->
+<h3 style="margin-bottom:1rem;" data-tr="Mevcut Vaatleriniz" data-en="Your Commitments">Mevcut Vaatleriniz</h3>
+<% if (vaatler && vaatler.length > 0) { %>
+    <div style="display:grid; gap:1rem;">
+        <% vaatler.forEach(function(v) { %>
+            <div class="card" style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <h4 style="color:var(--ak-kirmizi); margin-bottom:0.25rem;"><%= v.baslik_tr %> <% if (v.baslik_en) { %><small style="color:var(--text-muted);"> (<%= v.baslik_en %>)</small><% } %></h4>
+                    <p style="color:var(--text-secondary); font-size:0.95rem;"><%= v.aciklama_tr || 'Açıklama girilmedi.' %></p>
+                </div>
+                <form action="/panel/vaatler/sil/<%= v.id %>" method="POST" onsubmit="return confirm('Bu vaadi silmek istediğinize emin misiniz?');">
+                    <button type="submit" class="btn btn-danger btn-sm" data-tr="Sil" data-en="Delete">Sil</button>
+                </form>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <div class="card" style="text-align:center; color:var(--text-muted);" data-tr="Henüz bir vaat eklemediniz." data-en="No commitments added yet.">Henüz bir vaat eklemediniz.</div>
+<% } %>
+
+<%- include('layout_alt') %>

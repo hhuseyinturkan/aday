@@ -1,0 +1,105 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);">Sistem İstatistikleri ve Genel Bakış</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;">Sistemdeki tüm adayların, içeriklerin ve ziyaretçi trafiklerinin özeti.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj %></div>
+<% } %>
+
+<!-- İstatistik Kartları -->
+<div class="grid-container">
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.toplamAday %></div>
+            <div class="stat-title">Toplam Kayıtlı Aday</div>
+        </div>
+        <div style="font-size:2.5rem;">👥</div>
+    </div>
+    <div class="card stat-card" style="border-left:4px solid var(--ak-sari);">
+        <div>
+            <div class="stat-number" style="color:var(--ak-sari);"><%= istatistikler.onayBekleyenAday %></div>
+            <div class="stat-title">Onay Bekleyen Aday</div>
+        </div>
+        <div style="font-size:2.5rem;">⏳</div>
+    </div>
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.toplamHaber %></div>
+            <div class="stat-title">Sistemdeki Toplam Haber</div>
+        </div>
+        <div style="font-size:2.5rem;">📰</div>
+    </div>
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.toplamProje %></div>
+            <div class="stat-title">Sistemdeki Toplam Proje</div>
+        </div>
+        <div style="font-size:2.5rem;">🏗️</div>
+    </div>
+    <div class="card stat-card">
+        <div>
+            <div class="stat-number"><%= istatistikler.toplamZiyaret %></div>
+            <div class="stat-title">Toplam Sayfa Ziyareti</div>
+        </div>
+        <div style="font-size:2.5rem;">🌐</div>
+    </div>
+</div>
+
+<!-- Son Başvuran Adaylar -->
+<div class="card" style="margin-top:2rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 style="color:var(--ak-kirmizi);">Son Başvuran Adaylar</h3>
+        <a href="/yonetim/adaylar" class="btn btn-outline btn-sm">Tümünü Gör</a>
+    </div>
+
+    <% if (sonAdaylar && sonAdaylar.length > 0) { %>
+        <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; text-align:left;">
+                <thead>
+                    <tr style="border-bottom:2px solid var(--border-color); color:var(--text-secondary);">
+                        <th style="padding:0.75rem;">Aday Adı Soyadı</th>
+                        <th style="padding:0.75rem;">E-posta</th>
+                        <th style="padding:0.75rem;">İl / İlçe</th>
+                        <th style="padding:0.75rem;">Durum</th>
+                        <th style="padding:0.75rem;">Tarih</th>
+                        <th style="padding:0.75rem;">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% sonAdaylar.forEach(function(aday) { %>
+                        <tr style="border-bottom:1px solid var(--border-color);">
+                            <td style="padding:0.75rem; font-weight:600;"><%= aday.ad %> <%= aday.soyad %></td>
+                            <td style="padding:0.75rem;"><%= aday.eposta %></td>
+                            <td style="padding:0.75rem;"><%= aday.il %> / <%= aday.ilce %></td>
+                            <td style="padding:0.75rem;">
+                                <% if (aday.durum === 'onay_bekliyor') { %>
+                                    <span style="background:rgba(255,198,0,0.2); color:#B47D00; padding:0.25rem 0.5rem; border-radius:4px; font-weight:600; font-size:0.8rem;">Onay Bekliyor</span>
+                                <% } else if (aday.durum === 'aktif') { %>
+                                    <span style="background:rgba(16,185,129,0.2); color:#059669; padding:0.25rem 0.5rem; border-radius:4px; font-weight:600; font-size:0.8rem;">Aktif</span>
+                                <% } else { %>
+                                    <span style="background:rgba(239,68,68,0.2); color:#DC2626; padding:0.25rem 0.5rem; border-radius:4px; font-weight:600; font-size:0.8rem;">Pasif</span>
+                                <% } %>
+                            </td>
+                            <td style="padding:0.75rem; font-size:0.85rem; color:var(--text-muted);"><%= aday.kayit_tarihi %></td>
+                            <td style="padding:0.75rem;">
+                                <% if (aday.durum === 'onay_bekliyor') { %>
+                                    <form action="/yonetim/aday-onayla/<%= aday.kullanici_id %>" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-success btn-sm">Onayla</button>
+                                    </form>
+                                <% } %>
+                                <a href="/yonetim/aday-duzenle/<%= aday.kullanici_id %>" class="btn btn-outline btn-sm">Düzenle</a>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <p style="color:var(--text-muted); text-align:center; padding:1.5rem;">Henüz kayıtlı aday bulunmuyor.</p>
+    <% } %>
+</div>
+
+<%- include('layout_alt') %>

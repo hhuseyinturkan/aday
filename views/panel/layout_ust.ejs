@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aday Paneli - AK Parti Aday Tanıtım Sistemi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="panel-container">
+        <!-- Sol Menü (Sidebar) -->
+        <aside class="panel-sidebar">
+            <div class="sidebar-header">
+                <img src="/images/akparti-official-logo.png" alt="AK Parti Logo" style="height:32px; object-fit:contain;">
+                <h2>ADAY PANELİ</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="<%= sayfaAdi === 'geneller' ? 'active' : '' %>">
+                    <a href="/panel">📊 <span data-tr="Genel Bakış" data-en="Overview">Genel Bakış</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'kisisel' ? 'active' : '' %>">
+                    <a href="/panel/kisisel-bilgiler">👤 <span data-tr="Kişisel Bilgiler" data-en="Personal Info">Kişisel Bilgiler</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'ozgecmis' ? 'active' : '' %>">
+                    <a href="/panel/ozgecmis">📜 <span data-tr="Öz Geçmiş" data-en="Biography">Öz Geçmiş</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'vaatler' ? 'active' : '' %>">
+                    <a href="/panel/vaatler">🤝 <span data-tr="Vaatler" data-en="Promises">Vaatler</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'projeler' ? 'active' : '' %>">
+                    <a href="/panel/projeler">🏗️ <span data-tr="Projeler" data-en="Projects">Projeler</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'haberler' ? 'active' : '' %>">
+                    <a href="/panel/haberler">📰 <span data-tr="Haberler" data-en="News">Haberler</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'galeri' ? 'active' : '' %>">
+                    <a href="/panel/galeri">🖼️ <span data-tr="Fotoğraf Galerisi" data-en="Photo Gallery">Fotoğraf Galerisi</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'sosyal' ? 'active' : '' %>">
+                    <a href="/panel/sosyal">📱 <span data-tr="Sosyal Medya" data-en="Social Media">Sosyal Medya</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'iletisim' ? 'active' : '' %>">
+                    <a href="/panel/iletisim">📞 <span data-tr="İletişim Bilgileri" data-en="Contact Info">İletişim Bilgileri</span></a>
+                </li>
+                <li class="<%= sayfaAdi === 'ayarlar' ? 'active' : '' %>">
+                    <a href="/panel/ayarlar">⚙️ <span data-tr="Site Ayarları" data-en="Site Settings">Site Ayarları</span></a>
+                </li>
+                <li style="margin-top:2rem; border-top:1px solid var(--border-color);">
+                    <a href="/cikis" style="color:#EF4444;">🚪 <span data-tr="Çıkış Yap" data-en="Logout">Çıkış Yap</span></a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Sağ İçerik Alanı -->
+        <main class="panel-content">
+            <!-- Üst Bar -->
+            <div class="top-bar">
+                <div>
+                    <h2 style="font-size:1.25rem;"><%= oturumAday.ad %> <%= oturumAday.soyad %></h2>
+                    <span style="font-size:0.85rem; color:var(--text-muted);">📍 <%= oturumAday.il %> / <%= oturumAday.ilce %></span>
+                </div>
+                <div class="top-controls">
+                    <a href="/aday/<%= oturumAday.slug %>" target="_blank" class="btn btn-outline btn-sm" data-tr="🌐 Sitemi Gör" data-en="🌐 View My Site">🌐 Sitemi Gör</a>
+                    <button class="btn btn-outline btn-sm dil-degistir-btn">🌐 <span class="dil-etiket-metni">EN</span></button>
+                    <button class="btn btn-outline btn-sm tema-degistir-btn"><span class="tema-durum-metni">🌙 Karanlık</span></button>
+                </div>
+            </div>

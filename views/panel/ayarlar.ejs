@@ -1,0 +1,53 @@
+<%- include('layout_ust') %>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem; color:var(--text-primary);" data-tr="Site Ayarları" data-en="Site Settings">Site Ayarları</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem;" data-tr="Tanıtım sitenizin yayın durumunu, logosunu ve temalarını yönetin." data-en="Manage site visibility status, logo and themes.">Tanıtım sitenizin yayın durumunu, logosunu ve temalarını yönetin.</p>
+</div>
+
+<% if (mesaj) { %>
+    <div class="alert alert-success"><%= mesaj === 'ayarlar_guncellendi' ? 'Site ayarları başarıyla güncellendi.' : mesaj %></div>
+<% } %>
+
+<form action="/panel/ayarlar" method="POST" enctype="multipart/form-data" class="card">
+    <div style="margin-bottom:1.5rem; padding:1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); background:var(--bg-primary);">
+        <label style="font-weight:700; font-size:1.05rem; display:flex; align-items:center; gap:0.75rem; cursor:pointer;">
+            <input type="checkbox" name="yayinda_mi" value="1" <%= oturumAday.yayinda_mi === 1 ? 'checked' : '' %> style="width:20px; height:20px;">
+            <span data-tr="🌐 Tanıtım Sitem Yayında Olsun" data-en="🌐 Publish My Website">🌐 Tanıtım Sitem Yayında Olsun</span>
+        </label>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.4rem; margin-left:2rem;">
+            Bu seçeneğin işaretini kaldırırsanız tanıtım siteniz ziyaretçilere kapatılır ve "Geçici olarak yayında değildir" mesajı gösterilir.
+        </p>
+    </div>
+
+    <div class="form-group">
+        <label data-tr="Özel Logo Yükle" data-en="Upload Custom Logo">Özel Logo Yükle</label>
+        <% if (oturumAday.logo_resmi) { %>
+            <img src="<%= oturumAday.logo_resmi %>" alt="Logo" style="height:50px; display:block; margin-bottom:0.5rem; object-fit:contain;">
+        <% } %>
+        <input type="file" name="logo_resmi" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp">
+        <small style="color:var(--text-muted);">Format: PNG, JPG, WEBP (Max 5MB)</small>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="form-group">
+            <label data-tr="Vurgu Rengi" data-en="Accent Color">Vurgu Rengi</label>
+            <select name="tema_rengi" class="form-control">
+                <option value="kirmizi" <%= ayarlar.tema_rengi === 'kirmizi' ? 'selected' : '' %>>AK Parti Turuncu (#F37021)</option>
+                <option value="sari" <%= ayarlar.tema_rengi === 'sari' ? 'selected' : '' %>>AK Parti Altın Sarı (#FFB800)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label data-tr="Varsayılan Açılış Dili" data-en="Default Language">Varsayılan Açılış Dili</label>
+            <select name="varsayilan_dil" class="form-control">
+                <option value="tr" <%= ayarlar.varsayilan_dil === 'tr' ? 'selected' : '' %>>Türkçe (TR)</option>
+                <option value="en" <%= ayarlar.varsayilan_dil === 'en' ? 'selected' : '' %>>English (EN)</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" data-tr="Ayarları Kaydet" data-en="Save Settings">Ayarları Kaydet</button>
+</form>
+
+<%- include('layout_alt') %>

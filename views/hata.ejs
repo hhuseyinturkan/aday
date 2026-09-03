@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hata - AK Parti Aday Tanıtım Sistemi</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="display:flex; justify-content:center; align-items:center; min-height:100vh; text-align:center;">
+    <div class="card" style="max-width:500px; padding:3rem;">
+        <h1 style="color:var(--ak-kirmizi); font-size:3rem; margin-bottom:1rem;">⚠️</h1>
+        <h2 style="margin-bottom:1rem;" data-tr="Bir Hata Oluştu" data-en="An Error Occurred">Bir Hata Oluştu</h2>
+        <p style="color:var(--text-secondary); margin-bottom:2rem;"><%= mesaj || 'İstenen sayfa bulunamadı veya bir hata oluştu.' %></p>
+        <a href="/" class="btn btn-primary" data-tr="Ana Sayfaya Dön" data-en="Back to Home">Ana Sayfaya Dön</a>
+    </div>
+
+    <script src="/js/ana.js"></script>
+</body>
+</html>

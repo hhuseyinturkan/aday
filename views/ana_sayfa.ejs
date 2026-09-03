@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Parti Aday Tanıtım Platformu</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Üst Gezinme Çubuğu -->
+    <nav class="tanitim-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <img src="/images/akparti-official-logo.png" alt="AK Parti Logo" style="height:36px; object-fit:contain;">
+                <span>AK PARTİ ADAY PLATFORMU</span>
+            </a>
+            <div class="top-controls">
+                <button class="btn btn-outline btn-sm dil-degistir-btn">🌐 <span class="dil-etiket-metni">EN</span></button>
+                <button class="btn btn-outline btn-sm tema-degistir-btn"><span class="tema-durum-metni">🌙 Karanlık</span></button>
+                <% if (kullanici) { %>
+                    <% if (kullanici.rol === 'aday') { %>
+                        <a href="/panel" class="btn btn-primary btn-sm" data-tr="Aday Paneline Git" data-en="Go to Candidate Panel">Aday Paneline Git</a>
+                    <% } else if (kullanici.rol === 'super_admin') { %>
+                        <a href="/yonetim" class="btn btn-primary btn-sm" data-tr="Yönetim Paneline Git" data-en="Go to Admin Panel">Yönetim Paneline Git</a>
+                    <% } %>
+                    <a href="/cikis" class="btn btn-outline btn-sm" data-tr="Çıkış Yap" data-en="Logout">Çıkış Yap</a>
+                <% } else { %>
+                    <a href="/giris" class="btn btn-outline btn-sm" data-tr="Aday Girişi" data-en="Candidate Login">Aday Girişi</a>
+                    <a href="/kayit" class="btn btn-primary btn-sm" data-tr="Aday Kaydı Ol" data-en="Candidate Register">Aday Kaydı Ol</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Bölümü -->
+    <header class="hero-section" style="background-image: url('/images/default-kapak.svg');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title" data-tr="Türkiye Yüzyılı İçin Adaylarımız" data-en="Our Candidates for Türkiye Century">Türkiye Yüzyılı İçin Adaylarımız</h1>
+            <p class="hero-subtitle" data-tr="Halka Hizmet, Hakk'a Hizmettir" data-en="Service to Public is Service to God">Halka Hizmet, Hakk'a Hizmettir</p>
+            <p data-tr="AK Parti adaylarının kişisel tanıtım sitelerine ulaşabilir, proje ve haberlerini inceleyebilirsiniz."
+               data-en="Explore AK Party candidates' personal websites, projects and news.">
+                AK Parti adaylarının kişisel tanıtım sitelerine ulaşabilir, proje ve haberlerini inceleyebilirsiniz.
+            </p>
+            <div style="margin-top:2rem;">
+                <a href="/kayit" class="btn btn-secondary" data-tr="Aday mısınız? Hemen Başvurun" data-en="Are you a Candidate? Apply Now">Aday mısınız? Hemen Başvurun</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Aday Listesi Bölümü -->
+    <main class="section">
+        <h2 class="section-title" data-tr="Aktif Adaylarımız" data-en="Active Candidates">Aktif Adaylarımız</h2>
+
+        <% if (mesaj) { %>
+            <div class="alert alert-success"><%= mesaj %></div>
+        <% } %>
+
+        <% if (adaylar && adaylar.length > 0) { %>
+            <div class="grid-container">
+                <% adaylar.forEach(function(aday) { %>
+                    <div class="card" style="text-align:center;">
+                        <img src="<%= aday.profil_resmi || 'https://via.placeholder.com/150?text=Aday' %>" alt="<%= aday.ad %> <%= aday.soyad %>" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin:0 auto 1rem; border:3px solid var(--ak-sari);">
+                        <h3 style="margin-bottom:0.25rem;"><%= aday.ad %> <%= aday.soyad %></h3>
+                        <p style="color:var(--ak-kirmizi); font-weight:600; font-size:0.9rem; margin-bottom:0.5rem;"><%= aday.unvan_tr || 'AK Parti Adayı' %></p>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">📍 <%= aday.il %> / <%= aday.ilce %></p>
+                        <a href="/aday/<%= aday.slug %>" class="btn btn-primary btn-sm" style="width:100%;" data-tr="Tanıtım Sitesini İncele" data-en="View Candidate Website">Tanıtım Sitesini İncele</a>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="card" style="text-align:center; padding:3rem;">
+                <p data-tr="Henüz yayında olan aday tanıtım sitesi bulunmamaktadır." data-en="No active candidate presentation website found yet.">Henüz yayında olan aday tanıtım sitesi bulunmamaktadır.</p>
+            </div>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> AK Parti Aday Tanıtım Platformu - Tüm Hakları Saklıdır.</p>
+    </footer>
+
+    <script src="/js/ana.js"></script>
+</body>
+</html>

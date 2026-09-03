@@ -5,6 +5,8 @@
 
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
 const { adayGirisKontrol } = require('../middleware/oturumKontrol');
 const dosyaYukle = require('../middleware/dosyaYukle');
 const {
@@ -13,6 +15,21 @@ const {
     veritabaniHepsiniCek
 } = require('../veritabani');
 const { otomatikCevir } = require('../utils/cevirici');
+
+// Sunucudan resim dosyasını güvenli şekilde silme yardımcı fonksiyonu
+function resimSil(resimYolu) {
+    if (!resimYolu) return;
+    if (typeof resimYolu === 'string' && resimYolu.startsWith('/uploads/')) {
+        const tamYol = path.join(__dirname, '../public', resimYolu);
+        if (fs.existsSync(tamYol)) {
+            try {
+                fs.unlinkSync(tamYol);
+            } catch (hata) {
+                console.error('Dosya silinirken hata oluştu:', hata);
+            }
+        }
+    }
+}
 
 // Aday Giriş Kontrol Middleware'ini Tüm Panel Rotalarında Kullan
 router.use(adayGirisKontrol);
@@ -56,17 +73,35 @@ router.post('/kisisel-bilgiler', dosyaYukle.fields([
     { name: 'kapak_resmi', maxCount: 1 }
 ]), async (req, res) => {
     const adayId = req.adayProfili.id;
-    const { ad, soyad, unvan_tr, unvan_en, il, ilce, kisa_tanitim_tr, kisa_tanitim_en } = req.body;
+    const { ad, soyad, unvan_tr, unvan_en, il, ilce, kisa_tanitim_tr, kisa_tanitim_en, sil_profil_resmi, sil_kapak_resmi } = req.body;
 
     try {
         let profilResmiYolu = req.adayProfili.profil_resmi;
         let kapakResmiYolu = req.adayProfili.kapak_resmi;
 
-        if (req.files['profil_resmi']) {
+        // Profil Resmi Silme veya Güncelleme Kontrolü
+        if (sil_profil_resmi === '1' || sil_profil_resmi === 'on') {
+            resimSil(profilResmiYolu);
+            profilResmiYolu = null;
+        }
+
+        if (req.files && req.files['profil_resmi']) {
+            if (req.adayProfili.profil_resmi) {
+                resimSil(req.adayProfili.profil_resmi);
+            }
             profilResmiYolu = '/uploads/' + req.files['profil_resmi'][0].filename;
         }
 
-        if (req.files['kapak_resmi']) {
+        // Kapak Resmi Silme veya Güncelleme Kontrolü
+        if (sil_kapak_resmi === '1' || sil_kapak_resmi === 'on') {
+            resimSil(kapakResmiYolu);
+            kapakResmiYolu = null;
+        }
+
+        if (req.files && req.files['kapak_resmi']) {
+            if (req.adayProfili.kapak_resmi) {
+                resimSil(req.adayProfili.kapak_resmi);
+            }
             kapakResmiYolu = '/uploads/' + req.files['kapak_resmi'][0].filename;
         }
 
@@ -95,6 +130,36 @@ router.post('/kisisel-bilgiler', dosyaYukle.fields([
     }
 });
 
+// Profil Fotoğrafı Tek Tıkla Silme (POST /panel/profil-resmi-sil)
+router.post('/profil-resmi-sil', async (req, res) => {
+    const adayId = req.adayProfili.id;
+    try {
+        if (req.adayProfili.profil_resmi) {
+            resimSil(req.adayProfili.profil_resmi);
+            await veritabaniCalistir("UPDATE aday_profilleri SET profil_resmi = NULL WHERE id = ?", [adayId]);
+        }
+        res.redirect('/panel/kisisel-bilgiler?mesaj=profil_resmi_silindi');
+    } catch (hata) {
+        console.error('Profil resmi silme hatası:', hata);
+        res.redirect('/panel/kisisel-bilgiler?hata=silme_basarisiz');
+    }
+});
+
+// Kapak Fotoğrafı Tek Tıkla Silme (POST /panel/kapak-resmi-sil)
+router.post('/kapak-resmi-sil', async (req, res) => {
+    const adayId = req.adayProfili.id;
+    try {
+        if (req.adayProfili.kapak_resmi) {
+            resimSil(req.adayProfili.kapak_resmi);
+            await veritabaniCalistir("UPDATE aday_profilleri SET kapak_resmi = NULL WHERE id = ?", [adayId]);
+        }
+        res.redirect('/panel/kisisel-bilgiler?mesaj=kapak_resmi_silindi');
+    } catch (hata) {
+        console.error('Kapak resmi silme hatası:', hata);
+        res.redirect('/panel/kisisel-bilgiler?hata=silme_basarisiz');
+    }
+});
+
 // 3. Öz Geçmiş (GET & POST /panel/ozgecmis)
 router.get('/ozgecmis', async (req, res) => {
     const adayId = req.adayProfili.id;
@@ -103,7 +168,8 @@ router.get('/ozgecmis', async (req, res) => {
         res.render('panel/ozgecmis', {
             sayfaAdi: 'ozgecmis',
             ozgecmis,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Özgeçmiş çekme hatası:', hata);
@@ -146,7 +212,8 @@ router.get('/vaatler', async (req, res) => {
         res.render('panel/vaatler', {
             sayfaAdi: 'vaatler',
             vaatler,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Vaatler hatası:', hata);
@@ -195,7 +262,8 @@ router.get('/projeler', async (req, res) => {
         res.render('panel/projeler', {
             sayfaAdi: 'projeler',
             projeler,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Projeler hatası:', hata);
@@ -245,7 +313,8 @@ router.get('/haberler', async (req, res) => {
         res.render('panel/haberler', {
             sayfaAdi: 'haberler',
             haberler,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Haberler hatası:', hata);
@@ -296,7 +365,8 @@ router.get('/galeri', async (req, res) => {
         res.render('panel/galeri', {
             sayfaAdi: 'galeri',
             galeri,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Galeri hatası:', hata);
@@ -348,7 +418,8 @@ router.get('/sosyal', async (req, res) => {
         res.render('panel/sosyal', {
             sayfaAdi: 'sosyal',
             sosyal,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Sosyal medya hatası:', hata);
@@ -385,7 +456,8 @@ router.get('/iletisim', async (req, res) => {
         res.render('panel/iletisim', {
             sayfaAdi: 'iletisim',
             iletisim,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('İletişim hatası:', hata);
@@ -423,7 +495,8 @@ router.get('/ayarlar', async (req, res) => {
         res.render('panel/ayarlar', {
             sayfaAdi: 'ayarlar',
             ayarlar,
-            mesaj: req.query.mesaj || null
+            mesaj: req.query.mesaj || null,
+            hata: req.query.hata || null
         });
     } catch (hata) {
         console.error('Site ayarları hatası:', hata);

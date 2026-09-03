@@ -61,7 +61,7 @@
             <div class="grid-container">
                 <% adaylar.forEach(function(aday) { %>
                     <div class="card" style="text-align:center;">
-                        <img src="<%= aday.profil_resmi || 'https://via.placeholder.com/150?text=Aday' %>" alt="<%= aday.ad %> <%= aday.soyad %>" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin:0 auto 1rem; border:3px solid var(--ak-sari);">
+                        <img src="<%= aday.profil_resmi || '/images/akparti-official-logo.png' %>" alt="<%= aday.ad %> <%= aday.soyad %>" style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin:0 auto 1rem; border:3px solid var(--ak-sari); background:#fff;">
                         <h3 style="margin-bottom:0.25rem;"><%= aday.ad %> <%= aday.soyad %></h3>
                         <p style="color:var(--ak-kirmizi); font-weight:600; font-size:0.9rem; margin-bottom:0.5rem;"><%= aday.unvan_tr || 'AK Parti Adayı' %></p>
                         <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">📍 <%= aday.il %> / <%= aday.ilce %></p>

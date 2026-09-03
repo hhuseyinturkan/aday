@@ -130,6 +130,17 @@ a:hover {
     background-color: #DC2626;
 }
 
+.btn-outline-danger {
+    background-color: transparent;
+    border: 1.5px solid #EF4444;
+    color: #EF4444;
+}
+
+.btn-outline-danger:hover {
+    background-color: #EF4444;
+    color: #FFFFFF;
+}
+
 .btn-success {
     background-color: #10B981;
     color: #FFFFFF;

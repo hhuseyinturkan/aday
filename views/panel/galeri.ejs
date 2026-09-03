@@ -12,8 +12,8 @@
     </div>
 <% } %>
 
-<% if (req && req.query && req.query.hata) { %>
-    <div class="alert alert-danger"><%= req.query.hata === 'resim_secilmedi' ? 'Lütfen bir resim dosyası seçin!' : 'Bir hata oluştu!' %></div>
+<% if (typeof hata !== 'undefined' && hata) { %>
+    <div class="alert alert-danger"><%= hata === 'resim_secilmedi' ? 'Lütfen bir resim dosyası seçin!' : hata === 'ekleme_basarisiz' ? 'Fotoğraf yüklenemedi!' : hata === 'silme_basarisiz' ? 'Fotoğraf silinemedi!' : hata %></div>
 <% } %>
 
 <!-- Fotoğraf Yükleme Formu -->

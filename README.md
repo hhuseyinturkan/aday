@@ -44,29 +44,6 @@ Bu komut `package.json` dosyasında tanımlı olan şu kütüphaneleri otomatik 
 
 ---
 
-### 3. `.env` Dosyası Nasıl Hazırlanır?
-
-Projenin ana dizininde `.env` adında bir dosya oluşturun (veya `.env.example` dosyasının adını `.env` olarak değiştirin).
-
-İçeriğini şu şekilde düzenleyin:
-
-```env
-# Sunucu Portu ve Oturum Gizli Anahtarı
-PORT=3000
-OTURUM_GIZLI_ANAHTAR=akparti_aday_tanitim_gizli_anahtari_2026
-
-# İlk Süper Admin Bilgileri
-SUPER_ADMIN_EPOSTA=admin@akparti.org.tr
-SUPER_ADMIN_SIFRE=Admin123!
-
-# Geliştirme ve Domain Ayarları
-GELISTIRME_MODU=true
-DOMAIN_TANITIM=localhost
-DOMAIN_PANEL=panel.localhost
-DOMAIN_YONETIM=yonetim.localhost
-```
-
----
 
 ### 4. SQLite Veritabanı Nasıl Oluşur?
 
